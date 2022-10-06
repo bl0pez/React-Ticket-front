@@ -1,6 +1,8 @@
+import React, { useContext, useState } from 'react';
 import { DownloadOutlined } from '@ant-design/icons';
 import { Button, Col, Row, Typography } from 'antd';
 
+import { SocketContext } from '../context';
 import { useHideMenu } from '../hooks/useHideMenu';
 
 const { Title, Text } = Typography;
@@ -8,9 +10,15 @@ const { Title, Text } = Typography;
 export const CreateTicket = () => {
 
     useHideMenu(true);
+    const { socket } = useContext(SocketContext);
+    const [ticket, setTicket] = useState(null);
 
     const newTicket = () => {
-
+        //Emitimos un ento para crear un nuevo ticket
+                // evento , payload, callback
+        socket.emit('new-ticket', null, (ticket) => {
+            setTicket(ticket);
+        });
     }
 
     return (
@@ -55,7 +63,7 @@ export const CreateTicket = () => {
                         type="success"
                         style={{ fontSize: 55 }}
                     >
-                        55
+                        { ticket?.number }
                     </Text>
                 </Col>
             </Row>

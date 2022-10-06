@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { CloseCircleOutlined, RightOutlined } from '@ant-design/icons'
 import { Button, Col, Divider, Row, Typography } from 'antd'
 
+import { SocketContext } from '../context'
 import { getUserStorage } from '../helpers/getUserStorage';
 import { useHideMenu } from '../hooks/useHideMenu'
 
 export const Desk = () => {
 
     useHideMenu(false);
-    const [ user ] = useState( getUserStorage());
+    const [user] = useState(getUserStorage());
+    const { socket } = useContext(SocketContext);
     const navigate = useNavigate();
+    const [ticket, setTicket] = useState(null)
 
     const salir = () => {
         localStorage.removeItem('escritorio');
@@ -19,10 +22,12 @@ export const Desk = () => {
     }
 
     const nextTicket = () => {
-        
+        socket.emit('next-ticket', user, (ticket) => {
+            setTicket(ticket);
+        });
     }
 
-    if( !user.agente || !user.escritorio ) {
+    if (!user.agente || !user.escritorio) {
         return <Navigate to="/ingresar" />;
     }
 
@@ -33,12 +38,12 @@ export const Desk = () => {
                     span={20}
                 >
                     <Typography.Title level={2}>
-                        { user.agente }
+                        {user.agente}
                     </Typography.Title>
                     <Typography.Text>
                         Usted esta trabajando en el escritorio: </Typography.Text>
                     <Typography.Text type="success">
-                        { user.escritorio }
+                        {user.escritorio}
                     </Typography.Text>
                 </Col>
                 <Col
@@ -58,23 +63,28 @@ export const Desk = () => {
 
             <Divider />
 
-            <Row>
-                <Col>
-                    <Typography.Text>Esta atendiendo al cliente: </Typography.Text>
-                    <Typography.Text
-                        style={{ fontSize: 30 }}
-                        type="danger"
-                    >
-                        5
-                    </Typography.Text>
-                </Col>
-            </Row>
+            {
+                ticket && (
+                    <Row>
+                        <Col>
+                            <Typography.Text>Esta atendiendo al cliente: </Typography.Text>
+                            <Typography.Text
+                                style={{ fontSize: 30 }}
+                                type="danger"
+                            >
+                                {ticket.number}
+                            </Typography.Text>
+                        </Col>
+                    </Row>
+                )
+            }
 
             <Row>
                 <Col offset={18} span={6} align="right">
                     <Button
                         type="primary"
                         shape="round"
+                        disabled={!ticket}
                         onClick={nextTicket}
                     >
                         <RightOutlined />
