@@ -16,8 +16,8 @@ export const Desk = () => {
     const [ticket, setTicket] = useState(null)
 
     const salir = () => {
-        localStorage.removeItem('escritorio');
-        localStorage.removeItem('agente');
+        localStorage.removeItem('agent');
+        localStorage.removeItem('desk');
         navigate('/ingresar', { replace: true });
     }
 
@@ -27,7 +27,7 @@ export const Desk = () => {
         });
     }
 
-    if (!user.agente || !user.escritorio) {
+    if (!user.agent || !user.desk) {
         return <Navigate to="/ingresar" />;
     }
 
@@ -38,12 +38,12 @@ export const Desk = () => {
                     span={20}
                 >
                     <Typography.Title level={2}>
-                        {user.agente}
+                        {user.agent}
                     </Typography.Title>
                     <Typography.Text>
                         Usted esta trabajando en el escritorio: </Typography.Text>
                     <Typography.Text type="success">
-                        {user.escritorio}
+                        {user.desk}
                     </Typography.Text>
                 </Col>
                 <Col
@@ -84,7 +84,6 @@ export const Desk = () => {
                     <Button
                         type="primary"
                         shape="round"
-                        disabled={!ticket}
                         onClick={nextTicket}
                     >
                         <RightOutlined />

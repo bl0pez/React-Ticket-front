@@ -12,9 +12,9 @@ export const Ingresar = () => {
     const [ user ] = useState( getUserStorage());
 
     useHideMenu(false);
-    const onFinish = ({agente, escritorio}) => {
-        localStorage.setItem('agente', agente);
-        localStorage.setItem('escritorio', escritorio);
+    const onFinish = ({agent, desk}) => {
+        localStorage.setItem('agent', agent);
+        localStorage.setItem('desk', desk);
         navigate('/escritorio', { replace: true });
     };
 
@@ -22,7 +22,7 @@ export const Ingresar = () => {
         console.log('Failed:', errorInfo);
     };
 
-    if( user.agente && user.escritorio ) {
+    if( user.agent && user.desk ) {
         return <Navigate to="/escritorio" />;
     }
 
@@ -49,7 +49,7 @@ export const Ingresar = () => {
             >
                 <Form.Item
                     label="Nombre del agente"
-                    name="agente"
+                    name="agent"
                     rules={[
                         {
                             required: true,
@@ -62,7 +62,7 @@ export const Ingresar = () => {
 
                 <Form.Item
                     label="Escritorio"
-                    name="escritorio"
+                    name="desk"
                     rules={[
                         {
                             required: true,
