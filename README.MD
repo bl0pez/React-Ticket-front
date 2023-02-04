@@ -3,6 +3,8 @@
 ### Descripción
 Sistema de tickets en donde puedes asignarlos a un escritorio y ver el estado en una pantalla pública.
 
+- [Backend](https://github.com/bl0pez/Ticket-backEnd) - Backend de la aplicación Ticket
+
 ### Instalación
 
 1. Clonar el repositorio
